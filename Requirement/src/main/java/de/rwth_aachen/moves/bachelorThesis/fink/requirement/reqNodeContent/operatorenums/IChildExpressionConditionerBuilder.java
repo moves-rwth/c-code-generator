@@ -1,0 +1,13 @@
+package de.rwth_aachen.moves.bachelorThesis.fink.requirement.reqNodeContent.operatorenums;
+
+import de.rwth_aachen.moves.bachelorThesis.fink.requirement.datatypes.IDataTypeContext;
+import de.rwth_aachen.moves.bachelorThesis.fink.requirement.exceptions.UnsatisfiableConstraintsException;
+import de.rwth_aachen.moves.bachelorThesis.fink.requirement.expression.SimpleChildExpressionConditioner;
+import de.rwth_aachen.moves.bachelorThesis.fink.requirement.expression.SimpleResultingExpressionConditioner;
+
+import java.util.List;
+
+@FunctionalInterface
+public interface IChildExpressionConditionerBuilder {
+	SimpleChildExpressionConditioner getChildExpressionConditioner(int childId, SimpleChildExpressionConditioner parentConditioner, List<SimpleResultingExpressionConditioner> previousChildResultConditioners, IDataTypeContext dataTypeContext) throws UnsatisfiableConstraintsException;
+}

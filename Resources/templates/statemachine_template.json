@@ -1,0 +1,6 @@
+{
+  "templateName": "StatemachineTemplate",
+  "conditionArgumentCount": 0,
+  "codeArgumentCount": 0,
+  "c-file": "Resources/templates/templates-c/statemachine.c"
+}

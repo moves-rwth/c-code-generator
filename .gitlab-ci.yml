@@ -1,0 +1,37 @@
+image: randomdockerid666/swp-image:latest
+
+stages:
+  - build
+  - test
+
+variables:
+  GIT_STRATEGY: fetch
+  GIT_SUBMODULES_STRATEGY: recursive
+
+build:
+  stage: build
+  script:
+    - mvn clean compile package
+  artifacts:
+    paths: 
+      - CodeGenerator/target/
+      - CodeParser/target/
+
+test-execution:
+  stage: test
+  script:
+     - java -ea -jar ./CodeGenerator/target/CodeGenerator-1.0-SNAPSHOT.jar --createRandomRequirementCode --randomCodeAmount 300 --splitCount 1 --no-includeModelCheckingHarness --generateAsManyAsNeeded --concatenateAllProperties
+     - gcc -c -Wall -pedantic -Wno-unused-label ./CodeGenerator/outputFiles/Req1_Prop1__no_mc.c -o req.o
+     - g++ -c -Wall -pedantic ./scripts/random.cpp -o random.o
+     - g++ req.o random.o -o req.exe
+     - ./scripts/runExecutableWithTimeout.sh ./req.exe
+  dependencies: 
+    - build
+
+test-compileOnly:
+  stage: test
+  script:
+     - java -ea -jar ./CodeGenerator/target/CodeGenerator-1.0-SNAPSHOT.jar --createRandomRequirementCode --randomCodeAmount 300 --splitCount 1 --includeModelCheckingHarness --generateAsManyAsNeeded --concatenateAllProperties
+     - gcc -c -Wall -pedantic -Wno-unused-label ./CodeGenerator/outputFiles/Req1_Prop1_.c -o req.o
+  dependencies: 
+    - build
